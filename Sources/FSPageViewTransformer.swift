@@ -164,9 +164,12 @@ open class FSPagerViewTransformer: NSObject {
                 // This type doesn't support vertical mode
                 return
             }
-            let scale = max(1 - (1-self.minimumScale) * abs(position), self.minimumScale)
-            let transform = CATransform3DMakeScale(1.0, scale, 1.0)
-            attributes.transform3D = transform
+            let visibleRect = CGRect(origin: pagerView.collectionView.contentOffset, size: pagerView.collectionView.bounds.size)
+            let distance: CGFloat = visibleRect.midX - attributes.center.x;
+            let normalizedDistance = abs(distance/pagerView.itemSize.width)
+            let zoom = 1 - abs(1-self.minimumScale) * normalizedDistance
+            attributes.transform3D = CATransform3DMakeScale(1.0, zoom, 1.0)
+            
             let alpha = (self.minimumAlpha + (1-abs(position))*(1-self.minimumAlpha))
             attributes.alpha = alpha
             let zIndex = (1-abs(position)) * 10
