@@ -147,7 +147,7 @@ open class FSPagerViewTransformer: NSObject {
             attributes.alpha = alpha
             attributes.transform = transform
             attributes.zIndex = zIndex
-        case .overlap,.linear:
+        case .overlap:
             guard scrollDirection == .horizontal else {
                 // This type doesn't support vertical mode
                 return
@@ -155,6 +155,18 @@ open class FSPagerViewTransformer: NSObject {
             let scale = max(1 - (1-self.minimumScale) * abs(position), self.minimumScale)
             let transform = CGAffineTransform(scaleX: scale, y: scale)
             attributes.transform = transform
+            let alpha = (self.minimumAlpha + (1-abs(position))*(1-self.minimumAlpha))
+            attributes.alpha = alpha
+            let zIndex = (1-abs(position)) * 10
+            attributes.zIndex = Int(zIndex)
+        case .linear:
+            guard scrollDirection == .horizontal else {
+                // This type doesn't support vertical mode
+                return
+            }
+            let scale = max(1 - (1-self.minimumScale) * abs(position), self.minimumScale)
+            let transform = CATransform3DMakeScale(1.0, scale, 1.0)
+            attributes.transform3D = transform
             let alpha = (self.minimumAlpha + (1-abs(position))*(1-self.minimumAlpha))
             attributes.alpha = alpha
             let zIndex = (1-abs(position)) * 10
