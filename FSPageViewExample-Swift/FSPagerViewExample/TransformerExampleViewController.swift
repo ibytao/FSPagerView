@@ -30,8 +30,13 @@ class TransformerExampleViewController: UIViewController,FSPagerViewDataSource,F
                 self.pagerView.itemSize = FSPagerView.automaticSize
                 self.pagerView.decelerationDistance = 1
             case .linear, .overlap:
-                let transform = CGAffineTransform(scaleX: 0.6, y: 0.75)
+                 self.pagerView.collectionViewLayout.itemSpacing += 50
+                
+                 
+                let transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
                 self.pagerView.itemSize = self.pagerView.frame.size.applying(transform)
+                self.pagerView.transformer?.minimumScale = 0.95
+                self.pagerView.interitemSpacing = 60
                 self.pagerView.decelerationDistance = FSPagerView.automaticDistance
             case .ferrisWheel, .invertedFerrisWheel:
                 self.pagerView.itemSize = CGSize(width: 180, height: 140)
